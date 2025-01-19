@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const mongoose = require("mongoose");
 require('dotenv').config();
 
 const app = express();
@@ -16,6 +17,16 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Express Basic API' });
 });
+
+mongoose.connect(process.env.MONGO_URL, {
+    dbName: "mmoInfo",
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => {
+    app.listen(port, () => console.log(`Server Port: ${port}`));
+})
+.catch((err) => console.log(`${err} did not connect`));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
